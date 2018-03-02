@@ -40,6 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options, menu);
+
+        // set current state of showFavorites
+        menu.findItem(R.id.showStars).setChecked(showFavorites);
         return true;
     }
 
@@ -51,7 +54,9 @@ public class MainActivity extends AppCompatActivity {
         ListView list = findViewById(R.id.list);
         int pos = list.getFirstVisiblePosition();
 
+        // save showFavorites
         outState.putInt("first_Position", pos);
+        outState.putBoolean("show_Favorites", showFavorites);
     }
 
     @Override
@@ -62,6 +67,14 @@ public class MainActivity extends AppCompatActivity {
         int pos = savedInstanceState.getInt("first_Position");
         ListView list = findViewById(R.id.list);
         list.setSelection(pos);
+
+        // set showFavorites
+        showFavorites = savedInstanceState.getBoolean("show_Favorites");
+
+        // show favorite list
+        if (showFavorites) {
+            updateFavData();
+        }
     }
 
     public void floatingButtonClicked(View v) {
